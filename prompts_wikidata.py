@@ -1,9 +1,26 @@
-BASELINE_PROMPT_WIKIDATA_QUESTION = """
 
-Generate the question of the form "Who are some [Profession]s who were born in [City]?"
-Output format: Return a python list. comma separate each of the answers and place them inside double quote.
-Question: {question}
-"""
+BASELINE_PROMPT_WIKIDATA_QUESTION = """Answer the below question which is asking for a list of persons. Output should be a numbered list of maximum 10 persons and only contains the relevant & concise enitites as answer. NO ADDITIONAL DETAILS.
+
+Example Question: Who are some movie actors who were born in Boston?
+Example Answer: 1. Donnie Wahlberg
+2. Chris Evans
+3. Mark Wahlberg
+4. Ben Affleck
+5. Uma Thurman
+Example Question: Who are some football players who were born in Madrid?
+Example Answer: 1. Sergio Ramos
+2. Marcos Alonso
+3. David De Gea
+4. Fernando Torres
+
+Example Question: Who are some politicians who were born in Washington?
+Example Answer: 1. Barack Obama
+2. Bill Clinton
+3. Bil Sheffield
+4. George Washington
+
+Actual Question: {original_question}"""
+
 
 PLAN_VERIFICATION_TWO_STEP_PROMPT_WIKI = """Your task is to create a series of verification questions based on the below question, the verfication question template and baseline response.
 Example Question: Who are some movie actors who were born in Boston?
