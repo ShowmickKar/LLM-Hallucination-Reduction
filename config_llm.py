@@ -1,5 +1,6 @@
 import torch
 import gradio as gr
+from utils import *
 
 from textwrap import fill
 from IPython.display import Markdown, display
@@ -10,15 +11,15 @@ from langchain.prompts.chat import (
     SystemMessagePromptTemplate,
     )
 
-from langchain import PromptTemplate
-from langchain import HuggingFacePipeline
+from langchain.prompts import PromptTemplate
+from langchain_community.llms import HuggingFacePipeline
 
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain.schema import AIMessage, HumanMessage
 from langchain.memory import ConversationBufferMemory
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import UnstructuredMarkdownLoader, UnstructuredURLLoader
+from langchain_community.document_loaders import UnstructuredMarkdownLoader, UnstructuredURLLoader
 from langchain.chains import LLMChain, SimpleSequentialChain, RetrievalQA, ConversationalRetrievalChain
 
 from transformers import BitsAndBytesConfig, AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
@@ -39,11 +40,17 @@ quantization_config = BitsAndBytesConfig(
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
 tokenizer.pad_token = tokenizer.eos_token
 
+# model = AutoModelForCausalLM.from_pretrained(
+#     MODEL_NAME, torch_dtype=torch.float16,
+#     trust_remote_code=True,
+#     device_map="auto",
+#     quantization_config=quantization_config
+# )
+
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME, torch_dtype=torch.float16,
     trust_remote_code=True,
     device_map="auto",
-    quantization_config=quantization_config
 )
 
 generation_config = GenerationConfig.from_pretrained(MODEL_NAME)
@@ -69,4 +76,18 @@ embeddings = HuggingFaceEmbeddings(
     model_name="thenlper/gte-large",
     model_kwargs={"device": "cuda"},
     encode_kwargs={"normalize_embeddings": True},
+)
+
+template = """
+[INST] <>
+Act as a Machine Learning engineer who is teaching high school students.
+<>
+
+{text} [/INST]
+"""
+
+
+prompt = PromptTemplate(
+    input_variables=["text"],
+    template=template,
 )
