@@ -1,3 +1,4 @@
+from itertools import islice
 from dataset import wiki_data
 from cov_wikidata import *
 
@@ -13,10 +14,16 @@ fp_baseline = 0
 tp_final = 0
 fp_final = 0
 
-for question in wiki_data:
+small_list = dict(islice(wiki_data.items(), 3))
+print(small_list)
+
+for question in small_list:
     intermediate_responses = wikidata_chain(question)
     baseline_response = intermediate_responses["baseline_response"]
     final_response = intermediate_responses["final_response"]
+    print(question)
+    print(baseline_response)
+    print(final_response)
     tp, fp = evaluate_wikidata(baseline_response, wiki_data[question])
     tp_baseline += tp
     fp_baseline += fp
@@ -24,5 +31,7 @@ for question in wiki_data:
     tp_final += tp
     fp_final += fp
 
-precision_baseline = (tp_baseline)/(tp_baseline+fp_baseline)
-precision_final = (tp_final)/(tp_final+fp_final)
+precision_baseline = ((tp_baseline)/(tp_baseline+fp_baseline)) * 100
+precision_final = ((tp_final)/(tp_final+fp_final)) * 100
+
+print(f"Precision baseline on wiki data: {precision_baseline} and final baseline on wiki data: {precision_final}")
