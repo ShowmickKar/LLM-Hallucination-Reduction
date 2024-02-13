@@ -1,10 +1,10 @@
 import re
-from config_llm import llm
+from config_llm import *
 from prompts_wikidata import *
 from utils import *
 
 def wikidata_chain(question):
-    baseline_response_prompt_template = BASELINE_PROMPT_WIKIDATA_QUESTION.format(question=question)
+    baseline_response_prompt_template = BASELINE_PROMPT_WIKIDATA_QUESTION.format(original_question=question)
     baseline_response = llm(prompt.format(text=baseline_response_prompt_template))
     baseline_response_parsed = parse_numbered_list(baseline_response)
     verification_question_prompt_template = PLAN_VERIFICATION_TWO_STEP_PROMPT_WIKI.format(original_question=question, baseline_response=baseline_response)
@@ -16,7 +16,7 @@ def wikidata_chain(question):
     verification_questions = parse_numbered_list(verification_questions)
 
     verification_q_a_pair = {}
-    for question in verification_questions:
+    for query in verification_questions:
         execute_verification_question_prompt_template = EXECUTE_VERIFICATION_FACTORED_PROMPT_WIKI.format(verification_question=question)
         verification_question_llm_response = llm(prompt.format(text=execute_verification_question_prompt_template))
         verification_q_a_pair[query] = verification_question_llm_response
@@ -31,7 +31,7 @@ def wikidata_chain(question):
     # print(f"Verification Answers:\n{verification_q_a_pair_str}")
 
     """ Generate Final Refined Response """
-    final_answer_prompt_template = FINAL_VERIFIED_TWO_STEP_PROMPT_WIKI.format(original_question=question, baseline_response=baseline_response, verification_q_a_pair=verification_q_a_pair_str)
+    final_answer_prompt_template = FINAL_VERIFIED_TWO_STEP_PROMPT_WIKI.format(original_question=question, baseline_response=baseline_response, verification_q_a_pairs=verification_q_a_pair_str)
 
     final_response = llm(prompt.format(text=final_answer_prompt_template))
     final_response_parsed = parse_numbered_list(final_response)
