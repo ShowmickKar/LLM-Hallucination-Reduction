@@ -1,12 +1,12 @@
-# import regex
+import regex
 
-# def parse_numbered_list(names):
-#     pattern1 = r"(?:\d+\.|\*|-|\.)\s*(.*)"
-#     pattern2 = r"\b(?:[\p{L}\']+(?:\.[ ]|[ -])?)+[\p{L}]+"
-#     matched_names, name_list = regex.findall(pattern1, names), []
-#     for name in matched_names:
-#         name_list.append(regex.findall(pattern2, name)[0])
-#     return name_list
+def parse_numbered_list(names):
+    pattern1 = r"(?:\d+\.|\*|-|\.)\s*(.*)"
+    pattern2 = r"\b(?:[\p{L}\']+(?:\.[ ]|[ -])?)+[\p{L}]+"
+    matched_names, name_list = regex.findall(pattern1, names), []
+    for name in matched_names:
+        name_list.append(regex.findall(pattern2, name)[0])
+    return name_list
 
 # # # Input string
 # # names_1 = """1. František Černý 2. Jan Hájek * Steve Smith - Dale Steyn . Éléonore Finch 4. Dr. Mahbubul Hoque * Konan O' Brien * Jessy-Pinkman 7. Falcon-Kardigo"""
