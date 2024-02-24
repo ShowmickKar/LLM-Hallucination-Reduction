@@ -47,6 +47,8 @@ Example Answer: No, TENET is directed by Christopher Nolan.
 Actual Question: {verification_question}"""
 
 FINAL_VERIFIED_TWO_STEP_PROMPT_WIKI_CATEGORY = """Given the below `Original Question` and `Baseline Answer`, analyze the `Verification Questions & Answer Pairs` to finally filter the refined answer. NO ADDITIONAL DETAILS.
+Provide the answer as a numbered list.
+
 
 Example Context:
 Example Original Question: Name some movies directed by Steven Spielberg.
@@ -73,4 +75,6 @@ Context:
 Actual Original Question: {original_question}
 Baseline Response: {baseline_response}
 
-Verification Questions & Answer Pairs From another source: {verification_q_a_pairs} """
+Verification Questions & Answer Pairs From another source: {verification_q_a_pairs}
+
+Provide the answer as a numbered list. """
