@@ -6,7 +6,9 @@ from utils import *
 def wikidata_chain(question):
     baseline_response_prompt_template = BASELINE_PROMPT_WIKIDATA_QUESTION.format(original_question=question)
     baseline_response = llm(prompt.format(text=baseline_response_prompt_template))
+    print(f"Baseline response: %s" % baseline_response)
     baseline_response_parsed = parse_numbered_list(baseline_response)
+    print(f"Baseline response: %s" % baseline_response_parsed)
     verification_question_prompt_template = PLAN_VERIFICATION_TWO_STEP_PROMPT_WIKI.format(original_question=question, baseline_response=baseline_response)
 
 
@@ -33,6 +35,8 @@ def wikidata_chain(question):
     """ Generate Final Refined Response """
     final_answer_prompt_template = FINAL_VERIFIED_TWO_STEP_PROMPT_WIKI.format(original_question=question, baseline_response=baseline_response, verification_q_a_pairs=verification_q_a_pair_str)
 
-    final_response = llm(prompt.format(text=final_answer_prompt_template))
+    final_response = llm(prompt.format(text=final_answer_prompt_template))  
+    print(f"Final Response: {final_response}")  
     final_response_parsed = parse_numbered_list(final_response)
+    print(f"Final Response: {final_response_parsed}")
     return {"question": question,  "baseline_response":baseline_response_parsed, "verification_q_a_pairs": verification_q_a_pair_str, "final_response":final_response_parsed}
