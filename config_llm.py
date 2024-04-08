@@ -79,11 +79,7 @@ embeddings = HuggingFaceEmbeddings(
 )
 
 template = """
-[INST] <>
-Act as a Machine Learning engineer who is teaching high school students.
-<>
-
-{text} [/INST]
+[INST] {text} [/INST]
 """
 
 
@@ -91,3 +87,9 @@ prompt = PromptTemplate(
     input_variables=["text"],
     template=template,
 )
+
+
+if __name__ == "__main__":
+    question = "Name some actors who were born in RJ, Rio de Janeiro in a Numbered List."
+    response = llm(prompt.format(text=question))
+    print(response)
