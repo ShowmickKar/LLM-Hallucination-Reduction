@@ -39,4 +39,4 @@ def wikidata_chain(question):
     print(f"Final Response: {final_response}")  
     final_response_parsed = parse_numbered_list(final_response)
     print(f"Final Response: {final_response_parsed}")
-    return {"question": question,  "baseline_response":baseline_response_parsed, "verification_q_a_pairs": verification_q_a_pair_str, "final_response":final_response_parsed}
+    return {"question": question, "baseline_unparsed": baseline_response, "baseline_response":baseline_response_parsed, "verification_q_a_pairs": verification_q_a_pair_str, "final_response_unparsed": final_response, "final_response":final_response_parsed}
